@@ -1,0 +1,98 @@
+# -----------------------------------------------------------------------------
+# 💡 General Rules
+# -----------------------------------------------------------------------------
+
+# OS & environment
+.DS_Store
+Thumbs.db
+.env
+*.swp
+*.tmp
+
+# Local-only docs
+HELP.md
+
+# -----------------------------------------------------------------------------
+# 🔥 Maven & Java Build Files
+# -----------------------------------------------------------------------------
+
+target/
+!target/*.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Maven Wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+
+# Compiled classes
+*.class
+
+# JARs & WARs
+*.jar
+*.war
+
+# H2 database
+*.h2.db
+
+# -----------------------------------------------------------------------------
+# ⚙️ IDEs
+# -----------------------------------------------------------------------------
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Spring Tool Suite
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# -----------------------------------------------------------------------------
+# 🔐 Sensitive Files
+# -----------------------------------------------------------------------------
+
+# SSL Certificates
+wallet-keystore.p12
+
+# Swagger/OpenAPI (if generated manually)
+*.json
+*.yaml
+
+# -----------------------------------------------------------------------------
+# 🛑 Git Specific
+# -----------------------------------------------------------------------------
+
+# Git attributes (keep local only)
+.gitattributes
+
+# -----------------------------------------------------------------------------
+# ✅ Keep these files tracked
+# -----------------------------------------------------------------------------
+
+!docker-compose.yml
+!Dockerfile
+!README.md
+!src/main/resources/application.yml

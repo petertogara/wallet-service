@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0" author="petertogara">
+        <comment>Create uuid-ossp extension for UUID generation</comment>
+        <sql>CREATE
+        EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+    </changeSet>
+    <changeSet id="create-wallet-sequence" author="petertogara">
+        <sql>CREATE SEQUENCE wallet_id_seq START WITH 100000;</sql>
+    </changeSet>
+
+    <changeSet id="1" author="petertogara">
+        <createTable tableName="wallets">
+            <column name="id" type="VARCHAR(50)" defaultValueComputed="'WALLET-' || nextval('wallet_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player_id" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="balance" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="2" author="petertogara (generated)">
+        <createTable tableName="game_events">
+            <column name="id" type="VARCHAR(50)" defaultValueComputed="md5(random()::text)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player_id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

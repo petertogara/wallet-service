@@ -1,0 +1,99 @@
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: file:/app/keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: wallet-ssl
+
+spring:
+  application:
+    name: wallet-service
+
+  profiles:
+    active: dev
+
+  security:
+     user:
+        name: admin
+        password: admin123
+
+  r2dbc:
+    url: r2dbc:postgresql://wallet-db:5432/wallet_db
+    username: admin
+    password: admin
+
+  datasource:
+    url: jdbc:postgresql://wallet-db:5432/wallet_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: ${SPRING_LIQUIBASE_ENABLED:false}
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    liquibase-schema: public
+
+  webflux:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "*"
+      allowed-headers: "*"
+
+logging:
+  level:
+    root: INFO
+    com.petmuc: DEBUG
+    io.github.resilience4j: DEBUG
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      walletService:
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 2000ms
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        registerHealthIndicator: true
+
+  retry:
+    instances:
+      walletServiceRetry:
+        maxAttempts: 3
+        waitDuration: 2s
+        retryExceptions:
+          - java.io.IOException
+          - java.sql.SQLException
+        ignoreExceptions:
+          - com.petmuc.wallet.exception.PlayerNotFoundException
+          - com.petmuc.wallet.exception.InsufficientBalanceException
+          - com.petmuc.wallet.exception.TransactionNotFoundException
+
+  ratelimiter:
+    instances:
+      walletService:
+        limitForPeriod: 100
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+
+dlq:
+  retryInterval: 30s
+  maxRetries: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, circuitbreakers, retries
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
