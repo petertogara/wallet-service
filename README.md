@@ -22,6 +22,32 @@ A high-performance, secure wallet backend service built using **Spring WebFlux**
 
 ---
 
+
+## 🧠 Design Decisions
+
+This wallet system is built for a modern, reactive gaming environment where responsiveness, scalability, and simplicity matter.
+
+- 🎯 **No Deposits by Design**  
+  The platform skips traditional deposit workflows. Inspired by game ecosystems that deal in in-app tokens or coins (not fiat), wallet balances grow **only from player wins**. No top-ups, no manual crediting. Purchases can only happen if there's value in the wallet — driving a **self-contained, activity-driven flow**.
+
+- ⚖️ **Wallets Born from Wins**  
+  A wallet is only created when a player wins — not before. This eliminates unnecessary entries for inactive users and aligns closely with real-world usage. If you’ve never played and won, you simply don’t have a wallet.
+
+- ⚡ **Reactive Architecture with Spring WebFlux**  
+  Chosen for its **non-blocking I/O**, **backpressure support**, and **event-driven flow**, Spring WebFlux ensures the service can scale under heavy concurrent traffic — crucial in game engines where thousands of balance checks and transactions may spike simultaneously.
+
+- 🐘 **PostgreSQL + R2DBC**  
+  PostgreSQL was selected for its rock-solid transactional guarantees. Paired with **R2DBC**, we get reactive database interactions that fully align with the WebFlux model — no blocking, no thread exhaustion, full vertical scalability.
+
+- 🔐 **Security & Simplicity**  
+  All endpoints are secured via **Basic Auth** over **HTTPS**, and Swagger UI is exposed in both HTTP and HTTPS to support ease of local testing. Passwords are configured via \`application.yml\` for convenience, but can easily be overridden in prod.
+
+The result?  
+A **clean**, **reactive**, **self-contained wallet service** that mimics token-based game ecosystems while staying lean, auditable, and maintainable.
+
+
+---
+
 ### 📂 Move the Keystore to Project Root
 
 ```bash
