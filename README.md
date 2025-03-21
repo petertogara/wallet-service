@@ -216,6 +216,5 @@ curl -k -u admin:admin123 https://localhost:8443/api/v1/wallet/player-001/balanc
 - 🐳 Testcontainers
 - 🛠️ Developer-friendly setup
 
-Prepared by **Peter Togara**  🇿🇼 
+ 🇿🇼   end     🇿🇼 
 
-_  Documented for future generations _
